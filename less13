@@ -1,0 +1,40 @@
+const fs = require('fs');
+const path = require('path');
+
+function findNodeModules(dir) {
+  let entries;
+  try {
+    entries = fs.readdirSync(dir, { withFileTypes: true });
+  } catch (err) {
+    return;
+  }
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+
+    if (entry.isDirectory()) {
+      if (entry.name === 'node_modules') {
+        console.log('node_modules:', fullPath);
+        printFolderContents(fullPath);
+      } else {
+        findNodeModules(fullPath);
+      }
+    }
+  }
+}
+function printFolderContents(dir, indent = '  ') {
+  let entries;
+  try {
+    entries = fs.readdirSync(dir, { withFileTypes: true });
+  } catch (err) {
+    return;
+  }
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    console.log(indent + (entry.isDirectory() ? '[DIR] ' : '[FILE] ') + entry.name);
+
+    if (entry.isDirectory()) {
+      printFolderContents(fullPath, indent + '  ');
+    }
+  }
+}
+findNodeModules(process.cwd());
