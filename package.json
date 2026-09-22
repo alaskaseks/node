@@ -1,0 +1,20 @@
+{
+  "name": "node_intro",
+  "version": "1.0.0",
+  "description": "",
+  "license": "MIT",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node 3.js",
+    "dev": "nodemon index.js -q"
+  },
+  "dependencies": {
+    "boxen": "^8.0.1",
+    "cowsay": "^1.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
