@@ -1,0 +1,40 @@
+import cowsay from "cowsay";
+import foxsay from "foxsay";
+
+const [, , ...args] = process.argv;
+const [cmd, ...words] = args;
+
+const printers = {
+  cowsay: (t) => cowsay.say({ text: t }),
+  cowthink: (t) => cowsay.think({ text: t }),
+  foxsay: (t) => foxsay(t),
+};
+const ops = {
+  "--sum": (n) => console.log("Sum -", n.reduce((a, b) => a + b, 0)),
+  "--mul": (n) => console.log("Product -", n.reduce((a, b) => a * b, 1)),
+  "--odd": (n) => console.log("Odd numbers -", ...n.filter((x) => x % 2 !== 0)),
+  "--even": (n) => console.log("Even numbers -", ...n.filter((x) => x % 2 === 0)),
+};
+const fail = (msg) => {
+  console.error(msg);
+  process.exit(1);
+};
+if (!cmd) fail("Error: no parameters. If you don't know the commands, type help");
+
+if (cmd === "help") {
+  console.log("Text:    node index.mjs <cowsay|cowthink|foxsay> <text>");
+  console.log("Numbers: node index.mjs <numbers...> <--sum|--mul|--odd|--even>");
+  console.log("Example: node index.mjs foxsay Hello");
+  console.log("Example: node index.mjs 1 2 3 4 5 --sum --even");
+
+} else if (printers[cmd]) {
+  if (!words.length) fail("Error: no text. Type help");
+  console.log(printers[cmd](words.reduce((a, b) => a + " " + b)));
+} else {
+  const flags = args.filter((a) => a.startsWith("--"));
+  const nums = args.filter((a) => !a.startsWith("--")).map(Number);
+  if (!nums.length || !flags.length || flags.some((f) => !ops[f])) {
+    fail("Error: unknown command. Type help");
+  }
+  flags.forEach((f) => ops[f](nums));
+}
