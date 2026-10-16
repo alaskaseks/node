@@ -1,5 +1,2 @@
-import { obj, sample } from "./module.js";
-
-console.log(obj); 
-
-console.log(sample())
+console.log("dsadasda", new Date().toLocaleTimeString());
+setInterval(() => {}, 1000);
